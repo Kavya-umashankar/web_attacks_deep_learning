@@ -110,7 +110,7 @@ legend.scheduler-border {
   <input type="text" id="fname" name="fname"><br>
 <br>
   <label for="tname">To Account number:</label>
-  <input type="text" id="lname" name="lname"><br>
+  <input type="text" id="tname" name="tname"><br>
 <br>
   <label for="amount">Amount (in $):</label>
   <input type="number" id="amt" name="amt">

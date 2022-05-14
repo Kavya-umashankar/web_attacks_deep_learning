@@ -100,6 +100,9 @@ legend.scheduler-border {
     </div>
   </div>
 </nav>
+
+<div class="row">
+          <div class="offset-2 col-8">
 <?php 
  
 //echo "Connected successfully<br>";
@@ -109,15 +112,14 @@ legend.scheduler-border {
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     // username and password sent from form 
     
-    $name =$_SESSION['mail'];
-    $data=$_GET['name'];
     $command = escapeshellcmd("python C:/xampp/htdocs/Onlinebank/xss.py \"$fname\" ");
     $a1 = shell_exec($command);
     $command = escapeshellcmd("python C:/xampp/htdocs/Onlinebank/xss.py \"$tname\" ");
     $a2 = shell_exec($command);
     $command = escapeshellcmd("python C:/xampp/htdocs/Onlinebank/xss.py \"$amt\" ");
     $a3 = shell_exec($command);
-if (($a1 == 0) && ($a2==0) && ($a3==0))
+
+if (($a1 == 1) and ($a2==1) and ($a3==1))
 {
     $con = mysqli_connect('localhost','root','','onlinebanking') or die('Unable To connect');
 
@@ -128,6 +130,31 @@ if (($a1 == 0) && ($a2==0) && ($a3==0))
     mysqli_stmt_execute($stmt);
 
     mysqli_close($con);
+
+    echo "<h2 center>Transaction Successfull</h2>";
+    $conn = mysqli_connect("localhost","root","","onlinebanking");
+// Check connection
+if (!$conn) {
+   die("Connection failed: " . mysqli_connect_error());
+}
+    $sql = "SELECT * FROM transact ";
+$result = $conn->query($sql);
+
+echo '<table border=1>
+<tr>
+      <th> From Account number</th>
+      <th> To account number</th>
+      <th> Amount</th></tr>';
+while($row = $result->fetch_assoc()) {
+
+  echo '<tr>
+  <td>'.$row["fnum"].'</td>
+        <td>'.$row["tnum"].'</td>
+        <td>'.$row["amt"].'</td></tr>';
+
+}
+  $conn->close();
+    
 }
 else{
     ?> <script>
@@ -136,8 +163,9 @@ else{
     </script>
     <?php
 }
-    // $command = escapeshellcmd('C:/final project/XSStest.py');
-    // $output = shell_exec($command);
-    // echo $output;
+    
 }
   ?>
+  </table>
+  </div>
+       </div>

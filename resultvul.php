@@ -101,54 +101,49 @@ legend.scheduler-border {
   </div>
 </nav>
 <?php 
-  $conn = mysqli_connect("localhost","root","","onlinebanking");
-// Check connection
-if (!$conn) {
-   die("Connection failed: " . mysqli_connect_error());
-}
+ 
 //echo "Connected successfully<br>";
-  $email = $_POST['email'];
-  $pass = $_POST['password'];
-  // echo $email;
-  // echo $pass;
-   $command = escapeshellcmd("python C:/xampp/htdocs/Onlinebank/run.py \"$email\" \"$pass\"  ");
-   $output = shell_exec($command);
-  //echo $output;
-  // $command2 = escapeshellcmd("python C:/xampp/htdocs/final_project/sqlitest1.py \"$pass\" ");
-  // $output2 = shell_exec($command2);
+  $fname = $_POST['fname'];
+  $tname = $_POST['tname'];
+  $amt = $_POST['amt'];
   
 
-  if ($output==1 )
-   {
-     ?>
-      <script>
-     alert('Sql Injection alert..!! Please use valid Credentials ,Else you will be blocked..!!');
-     window.location.href='home.php';
-    </script>
-   <?php
-   }
-   else{
-$sql = "SELECT * FROM user WHERE email = '$email' and password = '$pass';";
+  $con = mysqli_connect('localhost','root','','onlinebanking') or die('Unable To connect');
+
+    $sql = "insert into transactvul (fnum,tnum,amt) values('$fname','$tname','$amt')";
+
+    $stmt = mysqli_prepare($con,$sql);
+
+    mysqli_stmt_execute($stmt);
+
+    mysqli_close($con);
+
+    echo "<h2 center>Transaction Successfull</h2>";
+    $conn = mysqli_connect("localhost","root","","onlinebanking");
+    // Check connection
+    if (!$conn) {
+       die("Connection failed: " . mysqli_connect_error());
+    }
+    $sql = "SELECT * FROM transactvul ";
 $result = $conn->query($sql);
+
+echo '<table border=1>
+<tr>
+      <th> From Account number</th>
+      <th> To account number</th>
+      <th> Amount</th></tr>';
 while($row = $result->fetch_assoc()) {
 
-echo '<br>
-  <div class="row">
-          <div class="offset-2 col-8">
-        <fieldset class="scheduler-border">
-           <legend class="scheduler-border">Account type : '.$row["accounttype"].'</legend>
-           Account Holder : '.$row["name"].'<br>
-           Account number : '.$row["accnumber"].'<br>
-           Balance : $'.$row["balance"].'<br>
-           Interset Rate: 9% <br>
-           
-           
-       </fieldset>
-      </div>
-       </div> ';
+echo '<tr>
+<td>'.$row["fnum"].'</td>
+      <td>'.$row["tnum"].'</td>
+      <td>'.$row["amt"].'</td></tr>';
 
 }
-  }
+
   $conn->close();
-    
-?>
+
+  ?>
+  </table>
+</body>
+</html>

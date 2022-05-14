@@ -96,7 +96,7 @@ legend.scheduler-border {
 <nav class="navbar navbar-default" style="background: white; color:#1357a6">
   <div class="container-fluid">
     <div class="navbar-header">
-     <h5> <a class="navbar-brand" href="transact.php">Transaction</a><h5>
+     <h5> <a class="navbar-brand" href="transactvul.php">Transaction</a><h5>
     </div>
   </div>
 </nav>
@@ -109,25 +109,7 @@ if (!$conn) {
 //echo "Connected successfully<br>";
   $email = $_POST['email'];
   $pass = $_POST['password'];
-  // echo $email;
-  // echo $pass;
-   $command = escapeshellcmd("python C:/xampp/htdocs/Onlinebank/run.py \"$email\" \"$pass\"  ");
-   $output = shell_exec($command);
-  //echo $output;
-  // $command2 = escapeshellcmd("python C:/xampp/htdocs/final_project/sqlitest1.py \"$pass\" ");
-  // $output2 = shell_exec($command2);
-  
-
-  if ($output==1 )
-   {
-     ?>
-      <script>
-     alert('Sql Injection alert..!! Please use valid Credentials ,Else you will be blocked..!!');
-     window.location.href='home.php';
-    </script>
-   <?php
-   }
-   else{
+ 
 $sql = "SELECT * FROM user WHERE email = '$email' and password = '$pass';";
 $result = $conn->query($sql);
 while($row = $result->fetch_assoc()) {
@@ -148,7 +130,6 @@ echo '<br>
        </div> ';
 
 }
-  }
   $conn->close();
     
 ?>
